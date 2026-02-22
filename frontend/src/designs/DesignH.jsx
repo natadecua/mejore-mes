@@ -1,7 +1,7 @@
 // Design H: "Mejore Production Terminal" — Finalized Industrial Architecture
 // Handles barcodes, manual/machine modes, version check, and handoff routing.
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Scan, List, FileText, AlertCircle, 
   ArrowRightCircle, History, Package, 
@@ -54,13 +54,13 @@ export default function DesignH() {
   const formatTime = (s) => {
     const mins = Math.floor(s / 60)
     const secs = s % 60
-    return `${mins}m ${secs.toString().padStart(2, '0')}s`
+    return mins + "m " + secs.toString().padStart(2, '0') + "s"
   }
 
   return (
     <div className="min-h-screen bg-[#090a0c] text-slate-300 font-sans flex overflow-hidden">
       
-      {/* 📋 SIDEBAR */}
+      {/* Sidebar */}
       <aside className="w-80 bg-[#111318] border-r border-slate-800 flex flex-col shadow-2xl z-20 shrink-0">
         <div className="p-6 border-b border-slate-800 bg-slate-900/50">
           <div className="flex items-center justify-between mb-4">
@@ -68,8 +68,8 @@ export default function DesignH() {
               <List size={14} className="text-amber-500" /> Job Queue
             </h2>
             <div className="flex bg-black/40 rounded-lg p-1 border border-slate-800">
-               <button onClick={() => setStationType('machine')} className={`px-2 py-1 rounded text-[8px] font-black uppercase transition-all ${stationType === 'machine' ? 'bg-amber-600 text-black' : 'text-slate-500'}`}>CNC</button>
-               <button onClick={() => setStationType('manual')} className={`px-2 py-1 rounded text-[8px] font-black uppercase transition-all ${stationType === 'manual' ? 'bg-amber-600 text-black' : 'text-slate-500'}`}>MAN</button>
+               <button onClick={() => setStationType('machine')} className={"px-2 py-1 rounded text-[8px] font-black uppercase transition-all " + (stationType === 'machine' ? 'bg-amber-600 text-black' : 'text-slate-500')}>CNC</button>
+               <button onClick={() => setStationType('manual')} className={"px-2 py-1 rounded text-[8px] font-black uppercase transition-all " + (stationType === 'manual' ? 'bg-amber-600 text-black' : 'text-slate-500')}>MAN</button>
             </div>
           </div>
           <div className="relative group">
@@ -81,22 +81,22 @@ export default function DesignH() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto p-4 space-y-3 custom-scrollbar">
+        <div className="flex-1 overflow-auto p-4 space-y-3">
           {INITIAL_QUEUE.map((job) => (
             <button 
               key={job.id}
               onClick={() => { setActiveJob(job); setWorkState('idle'); setTimer(0); }}
-              className={`w-full text-left p-4 rounded-2xl border transition-all relative overflow-hidden
-                ${activeJob?.id === job.id ? 'bg-amber-600 border-amber-500 shadow-xl scale-[1.02]' : 'bg-slate-900/40 border-slate-800 hover:border-slate-700'}`}
+              className={"w-full text-left p-4 rounded-2xl border transition-all relative overflow-hidden " +
+                (activeJob?.id === job.id ? 'bg-amber-600 border-amber-500 shadow-xl scale-[1.02]' : 'bg-slate-900/40 border-slate-800 hover:border-slate-700')}
             >
               <div className="flex justify-between items-start mb-2">
-                <span className={`text-[10px] font-black uppercase tracking-tighter ${activeJob?.id === job.id ? 'text-black/60' : 'text-amber-600'}`}>{job.project}</span>
+                <span className={"text-[10px] font-black uppercase tracking-tighter " + (activeJob?.id === job.id ? 'text-black/60' : 'text-amber-600')}>{job.project}</span>
                 {job.status === 'blocked' && <ShieldAlert size={12} className="text-red-500" />}
               </div>
-              <h4 className={`font-black text-sm tracking-tight leading-none ${activeJob?.id === job.id ? 'text-black' : 'text-white'}`}>{job.part}</h4>
+              <h4 className={"font-black text-sm tracking-tight leading-none " + (activeJob?.id === job.id ? 'text-black' : 'text-white')}>{job.part}</h4>
               <div className="flex justify-between items-center mt-4">
-                <span className={`text-[9px] font-mono font-bold ${activeJob?.id === job.id ? 'text-black/40' : 'text-slate-600'}`}>{job.id}</span>
-                <span className={`px-2 py-0.5 rounded text-[10px] font-black ${activeJob?.id === job.id ? 'bg-black/10 text-black' : 'bg-black/40 text-slate-400'}`}>QTY {job.qty}</span>
+                <span className={"text-[9px] font-mono font-bold " + (activeJob?.id === job.id ? 'text-black/40' : 'text-slate-600')}>{job.id}</span>
+                <span className={"px-2 py-0.5 rounded text-[10px] font-black " + (activeJob?.id === job.id ? 'bg-black/10 text-black' : 'bg-black/40 text-slate-400')}>QTY {job.qty}</span>
               </div>
             </button>
           ))}
@@ -110,7 +110,7 @@ export default function DesignH() {
         </div>
       </aside>
 
-      {/* 🚀 MAIN DECK */}
+      {/* Main Deck */}
       <main className="flex-1 flex flex-col relative bg-[#0d0e12] min-w-0">
         {!activeJob ? (
           <div className="flex-1 flex flex-col items-center justify-center">
@@ -118,7 +118,7 @@ export default function DesignH() {
              <p className="mt-4 font-black uppercase tracking-[0.3em] text-slate-600">Select Job to Begin</p>
           </div>
         ) : (
-          <>
+          <div className="flex-1 flex flex-col overflow-hidden">
             <div className="h-16 bg-[#16181d] border-b border-slate-800 px-8 flex items-center justify-between shadow-md shrink-0">
               <div className="flex items-center gap-4">
                  <div className="flex items-center gap-2 bg-emerald-500/5 text-emerald-500 px-4 py-2 rounded-xl border border-emerald-500/20 text-[10px] font-black uppercase tracking-widest">
@@ -154,31 +154,31 @@ export default function DesignH() {
                   </div>
                 </div>
 
-                {/* TIMER DECK: FIXED SQUISH */}
-                <div className="flex flex-col md:flex-row gap-4 h-auto md:h-40 shrink-0">
+                {/* Timer Deck */}
+                <div className="flex flex-col md:flex-row gap-4 min-h-[160px] shrink-0">
                    <div className="flex-1 bg-zinc-900 border border-zinc-800 rounded-[1.5rem] p-6 flex flex-col justify-center items-center shadow-xl">
                      <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-1">Session Timer</p>
-                     <p className="text-4xl md:text-6xl font-black text-white tabular-nums tracking-tighter leading-none">{formatTime(timer)}</p>
+                     <p className="text-4xl md:text-5xl font-black text-white tabular-nums tracking-tighter leading-none">{formatTime(timer)}</p>
                    </div>
                    
                    <div className="flex-[2] flex gap-3">
                       {workState === 'idle' && (
-                        <button onClick={() => setWorkState('setup')} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-[1.5rem] font-black text-xl uppercase flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95">
+                        <button onClick={() => setWorkState('setup')} className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-[1.5rem] font-black text-xl uppercase flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95 border-b-4 border-blue-800 active:border-b-0">
                           <Settings size={24} /> SETUP
                         </button>
                       )}
                       {workState === 'setup' && (
-                        <button onClick={() => setWorkState('running')} className="flex-1 bg-amber-600 hover:bg-amber-500 text-black rounded-[1.5rem] font-black text-xl uppercase flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95">
+                        <button onClick={() => setWorkState('running')} className="flex-1 bg-amber-600 hover:bg-amber-500 text-black rounded-[1.5rem] font-black text-xl uppercase flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95 border-b-4 border-amber-800 active:border-b-0">
                           <Play fill="black" size={24} /> START
                         </button>
                       )}
                       {workState === 'running' && (
-                        <button onClick={() => setWorkState('quality')} className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-black rounded-[1.5rem] font-black text-xl uppercase flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95">
+                        <button onClick={() => setWorkState('quality')} className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-black rounded-[1.5rem] font-black text-xl uppercase flex items-center justify-center gap-4 transition-all shadow-xl active:scale-95 border-b-4 border-emerald-800 active:border-b-0">
                           <CheckCircle size={24} /> LOG UNIT
                         </button>
                       )}
                       {(workState === 'quality' || workState === 'route') && (
-                        <button onClick={() => setWorkState('route')} className={`flex-1 rounded-[1.5rem] font-black text-lg uppercase flex items-center justify-center gap-3 transition-all active:scale-95 shadow-xl ${workState === 'route' ? 'bg-amber-600 text-black' : 'bg-white text-black'}`}>
+                        <button onClick={() => setWorkState('route')} className={"flex-1 rounded-[1.5rem] font-black text-lg uppercase flex items-center justify-center gap-3 transition-all active:scale-95 shadow-xl border-b-4 " + (workState === 'route' ? 'bg-amber-600 text-black border-amber-800 active:border-b-0' : 'bg-white text-black border-slate-300 active:border-b-0')}>
                           {workState === 'route' ? 'MOVED' : 'ROUTE NEXT'} <ChevronRight size={18} />
                         </button>
                       )}
@@ -196,7 +196,7 @@ export default function DesignH() {
                   </div>
                 </section>
 
-                <section className="bg-slate-900 border border-slate-800 rounded-[1.5rem] p-6 border-l-4 border-l-amber-600">
+                <section className="bg-slate-900 border border-slate-800 rounded-[1.5rem] p-6 border-l-4 border-l-amber-600 shadow-lg">
                    <h3 className="text-[10px] font-black text-slate-500 flex items-center gap-2 mb-2 tracking-widest"><MapPin size={14} className="text-amber-600" /> LOGISTICS</h3>
                    <p className="text-[9px] font-bold text-slate-400 uppercase mb-1">Route to:</p>
                    <div className="bg-black/40 p-4 rounded-xl border border-slate-800">
@@ -204,19 +204,19 @@ export default function DesignH() {
                    </div>
                 </section>
 
-                <button onClick={() => setShowError(true)} className="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 rounded-[1.5rem] p-4 flex items-center justify-center gap-3 transition-all active:scale-95 group">
+                <button onClick={() => setShowError(true)} className="w-full bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-500 rounded-[1.5rem] p-4 flex items-center justify-center gap-3 transition-all active:scale-95 group shadow-lg">
                    <ShieldAlert size={20} className="group-hover:scale-110 transition-transform" /><span className="font-black text-xs uppercase tracking-widest">FLAG ERROR</span>
                 </button>
 
                 <section className="bg-indigo-600 rounded-[1.5rem] p-6 text-white shadow-xl relative overflow-hidden group cursor-pointer active:scale-95 transition-all flex flex-col justify-center min-h-[120px]">
                   <div className="absolute top-[-20%] right-[-10%] opacity-10 group-hover:rotate-12 transition-transform pointer-events-none"><Camera size={140} /></div>
                   <p className="text-[9px] font-black uppercase opacity-80 mb-1 tracking-widest leading-none">Quality Gate</p>
-                  <p className="text-lg font-black tracking-tighter leading-none mb-3">CAPTURE PHOTO</p>
+                  <p className="text-lg font-black tracking-tighter leading-none mb-3 uppercase">Capture Photo</p>
                   <div className="bg-white/20 p-2 rounded-xl border border-white/30 text-center text-[9px] font-black uppercase">Open Camera <ArrowUpRight size={12} className="inline ml-1"/></div>
                 </section>
               </div>
             </div>
-          </>
+          </div>
         )}
 
         {showError && (
