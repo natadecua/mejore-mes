@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import DesignA from './designs/DesignA'
 import DesignB from './designs/DesignB'
 import DesignC from './designs/DesignC'
@@ -59,7 +59,10 @@ export default function App() {
       <div className="max-w-4xl w-full">
         <div className="text-center mb-10">
           <div className="bg-amber-600 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl">
-             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v10"/><path d="M18.4 4.6a10 10 0 1 1-12.8 0"/></svg>
+             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+               <path d="M12 2v10"/>
+               <path d="M18.4 4.6a10 10 0 1 1-12.8 0"/>
+             </svg>
           </div>
           <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">Mejore <span className="text-amber-600 not-italic">MES</span></h1>
           <p className="text-slate-500 font-medium uppercase tracking-widest leading-none">Factory Hierarchy v4.0</p>
@@ -95,20 +98,12 @@ export default function App() {
 
               <div className={`mt-8 text-sm font-black flex items-center gap-2 transition-colors 
                 ${d.id === 'I' ? 'text-amber-500 group-hover:text-amber-400' : 'text-zinc-400 group-hover:text-white'}`}>
-                INITIALIZE <ChevronRightIcon size={18} />
+                INITIALIZE <div className="ml-2 font-bold font-mono">-{'>'}</div>
               </div>
             </button>
           ))}
         </div>
       </div>
     </div>
-  )
-}
-
-function ChevronRightIcon({ size }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m9 18 6-6-6-6"/>
-    </svg>
   )
 }
