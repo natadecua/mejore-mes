@@ -8,7 +8,7 @@ import {
   Play, Square, Pause, Settings, 
   FileCheck, ShieldAlert, ChevronRight,
   Clock, CheckCircle, Database, Camera,
-  Printer, ArrowUpRight
+  Printer, ArrowUpRight, MapPin
 } from 'lucide-react'
 
 const BRAND = {
@@ -19,9 +19,39 @@ const BRAND = {
 }
 
 const INITIAL_QUEUE = [
-  { id: 'PART-2045-A', project: 'Manila Hotel', part: 'Rashida Leg (Front)', qty: 40, status: 'ready', version: 'v4', cnc: 'L4_RASH_V4.nc', specs: { material: 'Solid Oak', tools: '5mm Pilot / 12mm Profile', grain: 'Vertical' } },
-  { id: 'PART-2045-B', project: 'Manila Hotel', part: 'Rashida Leg (Back)', qty: 40, status: 'ready', version: 'v4', cnc: 'L4_RASH_V4.nc', specs: { material: 'Solid Oak', tools: '5mm Pilot / 12mm Profile', grain: 'Vertical' } },
-  { id: 'PART-9981-D', project: 'Private Villa', part: 'Dining Table Top', qty: 2, status: 'blocked', version: 'v1', cnc: 'TAB_T_V1.nc', specs: { material: 'Walnut', tools: 'Planing / Sanding', grain: 'Cross' } },
+  { 
+    id: 'PART-2045-A', 
+    project: 'Manila Hotel', 
+    part: 'Rashida Leg (Front)', 
+    qty: 40, 
+    status: 'ready', 
+    version: 'v4', 
+    cnc: 'L4_RASH_V4.nc', 
+    nextStation: 'Sanding Bench 02',
+    specs: { material: 'Solid Oak', tools: '5mm Pilot / 12mm Profile', grain: 'Vertical' } 
+  },
+  { 
+    id: 'PART-2045-B', 
+    project: 'Manila Hotel', 
+    part: 'Rashida Leg (Back)', 
+    qty: 40, 
+    status: 'ready', 
+    version: 'v4', 
+    cnc: 'L4_RASH_V4.nc', 
+    nextStation: 'Sanding Bench 02',
+    specs: { material: 'Solid Oak', tools: '5mm Pilot / 12mm Profile', grain: 'Vertical' } 
+  },
+  { 
+    id: 'PART-9981-D', 
+    project: 'Private Villa', 
+    part: 'Dining Table Top', 
+    qty: 2, 
+    status: 'blocked', 
+    version: 'v1', 
+    cnc: 'TAB_T_V1.nc', 
+    nextStation: 'Finishing Booth A',
+    specs: { material: 'Walnut', tools: 'Planing / Sanding', grain: 'Cross' } 
+  },
 ]
 
 export default function DesignH() {
@@ -40,7 +70,11 @@ export default function DesignH() {
     return () => clearInterval(interval)
   }, [workState])
 
-  const formatTime = (s) => `${Math.floor(s / 60)}m ${s % 60}s`
+  const formatTime = (s) => {
+    const mins = Math.floor(s / 60)
+    const secs = s % 60
+    return `${mins}m ${secs}s`
+  }
 
   return (
     <div className="min-h-screen bg-[#090a0c] text-slate-300 font-sans flex overflow-hidden">
@@ -145,26 +179,26 @@ export default function DesignH() {
                     </div>
                   </div>
 
-                  <div className="flex-1 mt-8 border-2 border-dashed border-slate-800 rounded-3xl flex items-center justify-center bg-black/30 relative group cursor-zoom-in">
-                    <div className="flex flex-col items-center gap-3 text-slate-700 group-hover:text-slate-500 transition-colors">
+                  <div className="flex-1 mt-8 border-2 border-dashed border-slate-800 rounded-3xl flex items-center justify-center bg-black/30 relative group cursor-zoom-in min-h-[200px]">
+                    <div className="flex flex-col items-center gap-3 text-slate-700 group-hover:text-slate-500 transition-colors text-center p-4">
                       <FileText size={40} />
-                      <p className="font-black text-xs uppercase tracking-widest underline underline-offset-4 decoration-slate-800">Tap to expansion view plan</p>
+                      <p className="font-black text-xs uppercase tracking-widest underline underline-offset-4 decoration-slate-800">Tap to view technical drawing</p>
                     </div>
                   </div>
                 </div>
 
                 {/* INTERACTIVE CONTROL DECK */}
-                <div className="grid grid-cols-4 gap-4 h-48">
-                   <div className="col-span-1 bg-zinc-900 border border-zinc-800 rounded-[2rem] p-6 flex flex-col justify-between shadow-xl">
-                     <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest">Session Time</p>
-                     <p className="text-5xl font-black text-white tabular-nums tracking-tighter">{formatTime(timer)}</p>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 min-h-[160px]">
+                   <div className="col-span-1 bg-zinc-900 border border-zinc-800 rounded-[2rem] p-6 flex flex-col justify-center items-center shadow-xl text-center">
+                     <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2">Session Timer</p>
+                     <p className="text-4xl md:text-5xl font-black text-white tabular-nums tracking-tighter whitespace-nowrap">{formatTime(timer)}</p>
                    </div>
                    
                    <div className="col-span-3 flex gap-4">
                       {workState === 'idle' && (
                         <button 
                           onClick={() => setWorkState('setup')}
-                          className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-[2rem] font-black text-2xl uppercase tracking-tighter flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl shadow-blue-900/20 border-b-8 border-blue-800 active:border-b-0 active:translate-y-1"
+                          className="flex-1 bg-blue-600 hover:bg-blue-500 text-white rounded-[2rem] font-black text-xl uppercase tracking-tighter flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl shadow-blue-900/20 border-b-8 border-blue-800 active:border-b-0 active:translate-y-1"
                         >
                           <Settings size={28} /> Start Setup
                         </button>
@@ -173,9 +207,9 @@ export default function DesignH() {
                       {workState === 'setup' && (
                         <button 
                           onClick={() => setWorkState('running')}
-                          className="flex-1 bg-amber-600 hover:bg-amber-500 text-black rounded-[2rem] font-black text-2xl uppercase tracking-tighter flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl shadow-amber-900/20 border-b-8 border-amber-800 active:border-b-0 active:translate-y-1"
+                          className="flex-1 bg-amber-600 hover:bg-amber-500 text-black rounded-[2rem] font-black text-xl uppercase tracking-tighter flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl shadow-amber-900/20 border-b-8 border-amber-800 active:border-b-0 active:translate-y-1"
                         >
-                          <Play fill="black" size={28} /> Start Machining
+                          <Play fill="black" size={28} /> Start Batch
                         </button>
                       )}
 
@@ -183,7 +217,7 @@ export default function DesignH() {
                         <>
                           <button 
                             onClick={() => setWorkState('quality')}
-                            className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-black rounded-[2rem] font-black text-2xl uppercase tracking-tighter flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl shadow-emerald-900/20 border-b-8 border-emerald-800 active:border-b-0 active:translate-y-1"
+                            className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-black rounded-[2rem] font-black text-xl uppercase tracking-tighter flex items-center justify-center gap-4 transition-all active:scale-95 shadow-xl shadow-emerald-900/20 border-b-8 border-emerald-800 active:border-b-0 active:translate-y-1"
                           >
                             <CheckCircle size={28} /> Log 1 Unit
                           </button>
@@ -199,10 +233,10 @@ export default function DesignH() {
 
                       {(workState === 'quality' || workState === 'route') && (
                         <div className="flex-1 flex gap-4">
-                           <button onClick={() => setWorkState('running')} className="flex-1 bg-slate-800 border-2 border-slate-700 text-white rounded-[2rem] font-black text-sm uppercase tracking-widest hover:bg-slate-700 transition-all">Next Unit</button>
-                           <button onClick={() => setWorkState('route')} className={`flex-[1.5] rounded-[2rem] font-black text-sm uppercase tracking-widest flex items-center justify-center gap-3 transition-all active:scale-95 shadow-xl border-b-8
+                           <button onClick={() => setWorkState('running')} className="flex-1 bg-slate-800 border-2 border-slate-700 text-white rounded-[2rem] font-black text-xs md:text-sm uppercase tracking-widest hover:bg-slate-700 transition-all px-2">Next Unit</button>
+                           <button onClick={() => setWorkState('route')} className={`flex-[1.5] rounded-[2rem] font-black text-xs md:text-sm uppercase tracking-widest flex items-center justify-center gap-2 transition-all active:scale-95 shadow-xl border-b-8 px-2
                             ${workState === 'route' ? 'bg-amber-600 text-black border-amber-800' : 'bg-white text-black border-slate-300'}`}>
-                             {workState === 'route' ? 'Handoff pallet' : 'Route to next station'} <ChevronRight size={18} />
+                             {workState === 'route' ? 'Handoff confirmed' : 'Route to next station'} <ChevronRight size={18} />
                            </button>
                         </div>
                       )}
@@ -211,7 +245,7 @@ export default function DesignH() {
               </div>
 
               {/* RIGHT: INTEL & QUALITY (4/12) */}
-              <div className="col-span-4 space-y-4 flex flex-col h-full overflow-auto pr-2 custom-scrollbar">
+              <div className="col-span-4 space-y-4 flex flex-col h-full overflow-auto pr-2 custom-scrollbar pb-20">
                 
                 {/* BOM SPECS */}
                 <section className="bg-zinc-900/80 border border-slate-800 rounded-3xl p-6 shadow-inner">
@@ -230,6 +264,17 @@ export default function DesignH() {
                        </div>
                      ))}
                   </div>
+                </section>
+
+                {/* NEXT STATION (Replacement for manual printing) */}
+                <section className="bg-slate-900 border border-slate-800 rounded-3xl p-6 border-l-4 border-l-amber-600">
+                   <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2 flex items-center gap-2">
+                    <MapPin size={14} className="text-amber-600" /> Logistics Instruction
+                   </h3>
+                   <p className="text-[9px] font-bold text-slate-400 uppercase mb-2">Move current pallet to:</p>
+                   <div className="bg-black/40 p-4 rounded-2xl border border-slate-800">
+                      <p className="text-white font-black text-lg tracking-tight uppercase">{activeJob.nextStation}</p>
+                   </div>
                 </section>
 
                 {/* ERROR REPORTING */}
@@ -261,14 +306,6 @@ export default function DesignH() {
                   </div>
                 </section>
 
-                {/* PRINT LABEL */}
-                <button className="bg-slate-800 hover:bg-slate-700 text-white rounded-3xl p-5 border border-slate-700 flex items-center justify-between transition-all active:scale-95">
-                   <div className="flex items-center gap-3 font-black text-[10px] uppercase tracking-widest">
-                     <Printer size={18} className="text-amber-500" /> Generate Handoff Label
-                   </div>
-                   <ChevronRight size={16} className="text-slate-600" />
-                </button>
-
               </div>
             </div>
           </>
@@ -292,12 +329,12 @@ export default function DesignH() {
         )}
 
         {/* Global Footer */}
-        <footer className="h-12 bg-black border-t border-slate-800 px-8 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">
+        <footer className="h-12 bg-black border-t border-slate-800 px-8 flex items-center justify-between text-[10px] font-black uppercase tracking-[0.4em] text-slate-600 shrink-0">
            <div className="flex gap-8">
              <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div> Main Fleet Online</span>
-             <span className="flex items-center gap-2 font-mono tabular-nums text-slate-400 font-bold">{new Date().toLocaleDateString()} — {new Date().getHours()}:{new Date().getMinutes()}</span>
+             <span className="flex items-center gap-2 font-mono tabular-nums text-slate-400 font-bold uppercase tracking-tight overflow-hidden whitespace-nowrap">Batangas Plant</span>
            </div>
-           <span className="text-slate-700 italic">Mejore MES Hierarchy v3.2</span>
+           <span className="text-slate-700 italic hidden sm:block">Mejore MES Hierarchy v3.2</span>
         </footer>
       </main>
     </div>
