@@ -7,35 +7,29 @@ import DesignE from './designs/DesignE'
 import DesignF from './designs/DesignF'
 import DesignG from './designs/DesignG'
 import DesignH from './designs/DesignH'
+import DesignI from './designs/DesignI'
 
 const designs = [
   {
-    id: 'H',
-    name: 'Production Terminal',
-    desc: 'v3.2 Final Industrial Architecture. Includes Barcode Queue, Manual/CNC toggles, Handoff Labels, and Admin Error Escalation.',
-    best: 'All Production Machines & Manual Benches',
-    tags: ['Barcodes', 'Escalation', 'Handoffs'],
+    id: 'I',
+    name: 'Recursive Forge',
+    desc: 'v4.0 Hierarchy-First. Track every small screw, handle, and railing inside nested sub-assemblies.',
+    best: 'Complex Furniture Assembly (Bed/Drawer/Cabinet)',
+    tags: ['Nesting', 'Hardware Tracking', 'Tree View'],
   },
   {
-    id: 'G',
-    name: 'Command Deck',
-    desc: 'v3.0 Station Terminal. Features Job Queue and Engineering/CNC integrity check.',
-    best: 'CNC / Machining Stations',
-    tags: ['Queueing', 'Sync'],
+    id: 'H',
+    name: 'Production Terminal',
+    desc: 'v3.2 Industrial UI. Barcode-driven queue with Manual/Machine mode toggles.',
+    best: 'General Machining/Sanding Stations',
+    tags: ['Barcodes', 'Rugged'],
   },
   {
     id: 'E',
     name: 'Mejore Forge',
-    desc: 'Rugged, brand-aligned terminal with high-contrast amber accents.',
-    best: 'Factory Floor (General)',
-    tags: ['Brand Aligned', 'Rugged'],
-  },
-  {
-    id: 'B',
-    name: 'Office Hub',
-    desc: 'Management dashboard for project oversight and financial health.',
-    best: 'Manager Office (Desktop)',
-    tags: ['Management', 'Enterprise'],
+    desc: 'Rugged branding (Amber/Steel). Good for general factory floor visibility.',
+    best: 'Tablet/Wall-mounted Displays',
+    tags: ['Branding', 'High-Contrast'],
   },
 ]
 
@@ -50,6 +44,7 @@ export default function App() {
   if (selected === 'F') return <DesignF />
   if (selected === 'G') return <DesignG />
   if (selected === 'H') return <DesignH />
+  if (selected === 'I') return <DesignI />
 
   return (
     <div className="min-h-screen bg-[#05070a] text-white flex flex-col items-center justify-center p-8 font-sans">
@@ -59,14 +54,14 @@ export default function App() {
              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v10"/><path d="M18.4 4.6a10 10 0 1 1-12.8 0"/></svg>
           </div>
           <h1 className="text-4xl font-black text-white mb-2 uppercase tracking-tighter italic">Mejore <span className="text-amber-600 not-italic">MES</span></h1>
-          <p className="text-slate-500 font-medium text-lg uppercase tracking-widest">Batangas Factory Hierarchy v3.2</p>
+          <p className="text-slate-500 font-medium text-lg uppercase tracking-widest leading-none">Deep-Part Tracking Hierarchy v4.0</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {designs.map(d => (
             <button key={d.id} onClick={() => setSelected(d.id)}
               className={`text-left transition-all group relative overflow-hidden rounded-3xl p-8 border 
-                ${d.id === 'H' 
+                ${d.id === 'I' 
                   ? 'bg-zinc-900 border-amber-600/50 hover:border-amber-600 shadow-2xl shadow-amber-600/10' 
                   : 'bg-zinc-900/40 border-slate-800 hover:border-slate-600'}`}>
               
@@ -74,9 +69,9 @@ export default function App() {
                 {d.id}
               </div>
 
-              {d.id === 'H' && (
+              {d.id === 'I' && (
                 <span className="bg-amber-600 text-black text-[10px] font-black px-2 py-1 rounded mb-4 inline-block uppercase tracking-widest">
-                  Industrial Standard
+                  Deep Tracking Active
                 </span>
               )}
 
@@ -85,7 +80,7 @@ export default function App() {
               
               <div className="space-y-4">
                 <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${d.id === 'H' ? 'bg-amber-600 animate-pulse' : 'bg-slate-700'}`}></span> Deploy: {d.best}
+                  <span className={`w-2 h-2 rounded-full ${d.id === 'I' ? 'bg-amber-600 animate-pulse' : 'bg-slate-700'}`}></span> Best for: {d.best}
                 </p>
                 
                 <div className="flex flex-wrap gap-2">
@@ -98,8 +93,8 @@ export default function App() {
               </div>
 
               <div className={`mt-8 text-sm font-black flex items-center gap-2 transition-colors 
-                ${d.id === 'H' ? 'text-amber-500 group-hover:text-amber-400' : 'text-zinc-400 group-hover:text-white'}`}>
-                INITIALIZE STATION <ChevronRight size={18} />
+                ${d.id === 'I' ? 'text-amber-500 group-hover:text-amber-400' : 'text-zinc-400 group-hover:text-white'}`}>
+                INITIALIZE TERMINAL <ChevronRight size={18} />
               </div>
             </button>
           ))}
@@ -107,7 +102,7 @@ export default function App() {
 
         <footer className="mt-16 pt-8 border-t border-slate-900 text-center flex items-center justify-between">
           <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-[0.3em]">Mejore Manufacturing Execution System · Batangas City, PH</p>
-          <p className="text-zinc-700 text-[9px] font-bold uppercase tracking-[0.3em]">Revision 3.2.0-Alpha</p>
+          <p className="text-zinc-700 text-[9px] font-bold uppercase tracking-[0.3em]">Revision 4.0.0-Beta</p>
         </footer>
       </div>
     </div>
