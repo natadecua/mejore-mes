@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { 
   BarChart3, Clock, ScanBarcode, AlertTriangle, 
   Layers, Play, Pause, CheckCircle2, 
-  ArrowUpRight, Info, ChevronDown, Camera
+  ArrowUpRight, Info, ChevronDown, Camera, Settings
 } from 'lucide-react'
 
 const currentProject = {
@@ -33,6 +33,7 @@ export default function DesignF() {
   const [timer, setTimer] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [completed, setCompleted] = useState(8)
+  const [time, setTime] = useState(new Date().toLocaleTimeString())
   const totalInBatch = 20
 
   useEffect(() => {
@@ -43,6 +44,11 @@ export default function DesignF() {
     return () => clearInterval(interval)
   }, [isRunning])
 
+  useEffect(() => {
+    const clock = setInterval(() => setTime(new Date().toLocaleTimeString()), 1000)
+    return () => clearInterval(clock)
+  }, [])
+
   const formatTime = (s) => {
     const mins = Math.floor(s / 60)
     const secs = s % 60
@@ -50,7 +56,7 @@ export default function DesignF() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-300 font-sans p-4 flex flex-col gap-4">
+    <div className="min-h-screen bg-zinc-950 text-zinc-300 font-sans p-4 flex flex-col gap-4 overflow-hidden">
       
       {/* 🔝 PROJECT CONTEXT BAR */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-4 flex items-center justify-between shadow-xl">
@@ -76,10 +82,10 @@ export default function DesignF() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 overflow-hidden">
         
         {/* 📟 LEFT: HIERARCHY & SPECS (3/12) */}
-        <div className="lg:col-span-3 space-y-4">
+        <div className="lg:col-span-3 space-y-4 h-full flex flex-col">
           <section className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 h-full flex flex-col">
             <div className="mb-6">
               <span className="text-amber-600 text-[10px] font-black uppercase tracking-tighter bg-amber-600/10 px-2 py-0.5 rounded border border-amber-600/20">
@@ -91,11 +97,11 @@ export default function DesignF() {
               </p>
             </div>
 
-            <div className="space-y-2 flex-1">
+            <div className="space-y-2 flex-1 overflow-auto">
                <p className="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-3">Sub-Assembly Tree</p>
                {activeJob.components.map((c, i) => (
                  <div key={i} className="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-zinc-800/50">
-                    <div className={`w-2 h-2 rounded-full ${c.status === 'complete' ? 'bg-emerald-500' : 'bg-zinc-700 animate-pulse'}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${c.status === 'complete' ? 'bg-emerald-500' : 'bg-zinc-700'}`}></div>
                     <span className={`text-xs font-bold ${c.status === 'complete' ? 'text-zinc-400 line-through' : 'text-zinc-200'}`}>{c.name}</span>
                  </div>
                ))}
@@ -110,8 +116,8 @@ export default function DesignF() {
         </div>
 
         {/* ⏱️ CENTER: PERFORMANCE & TIMING (6/12) */}
-        <div className="lg:col-span-6 flex flex-col gap-4">
-          <section className="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] p-10 flex-1 flex flex-col items-center justify-between shadow-2xl relative overflow-hidden">
+        <div className="lg:col-span-6 flex flex-col gap-4 h-full">
+          <section className="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] p-8 flex-1 flex flex-col items-center justify-between shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-zinc-800">
               <div className="h-full bg-amber-600 shadow-[0_0_15px_rgba(217,119,6,0.5)] transition-all duration-500" style={{ width: `${(completed/totalInBatch)*100}%` }}></div>
             </div>
@@ -119,7 +125,7 @@ export default function DesignF() {
             <div className="w-full flex justify-between">
                <div>
                   <p className="text-zinc-500 text-xs font-black uppercase tracking-[0.2em] mb-2">Cycle Timer</p>
-                  <div className={`text-8xl font-black tabular-nums tracking-tighter ${timer > 480 ? 'text-red-500' : 'text-white'}`}>
+                  <div className={`text-7xl font-black tabular-nums tracking-tighter ${timer > 480 ? 'text-red-500' : 'text-white'}`}>
                     {formatTime(timer)}
                   </div>
                   <p className="text-zinc-600 text-xs font-bold mt-2 uppercase tracking-widest">
@@ -128,28 +134,28 @@ export default function DesignF() {
                </div>
                <div className="text-right">
                   <p className="text-zinc-500 text-xs font-black uppercase tracking-[0.2em] mb-1">Earned Value</p>
-                  <p className="text-4xl font-black text-emerald-500 tracking-tighter tabular-nums">₱{ (completed * 12500 * 0.15).toLocaleString() }</p>
+                  <p className="text-3xl font-black text-emerald-500 tracking-tighter tabular-nums">₱{(completed * 12500 * 0.15).toLocaleString()}</p>
                   <p className="text-zinc-600 text-[10px] font-bold mt-1 uppercase tracking-widest">{activeJob.stationWeight}</p>
                </div>
             </div>
 
             {/* BIG ACTION BUTTONS */}
-            <div className="w-full grid grid-cols-2 gap-8 mt-12">
+            <div className="w-full grid grid-cols-2 gap-6 mt-6">
                {!isRunning ? (
                  <button 
                    onClick={() => setIsRunning(true)}
-                   className="bg-amber-600 hover:bg-amber-500 text-black rounded-3xl py-10 flex flex-col items-center gap-2 transition-all active:scale-95 shadow-2xl shadow-amber-600/10 group"
+                   className="bg-amber-600 hover:bg-amber-500 text-black rounded-3xl py-8 flex flex-col items-center gap-2 transition-all active:scale-95 shadow-2xl shadow-amber-600/10"
                  >
-                   <Play size={40} fill="black" />
-                   <span className="font-black text-xl uppercase tracking-tighter">Start Cycle</span>
+                   <Play size={32} fill="black" />
+                   <span className="font-black text-lg uppercase tracking-tighter">Start Cycle</span>
                  </button>
                ) : (
                  <button 
                    onClick={() => setIsRunning(false)}
-                   className="bg-zinc-800 hover:bg-zinc-700 text-white rounded-3xl py-10 flex flex-col items-center gap-2 transition-all active:scale-95 border border-zinc-700 shadow-2xl shadow-black group"
+                   className="bg-zinc-800 hover:bg-zinc-700 text-white rounded-3xl py-8 flex flex-col items-center gap-2 transition-all active:scale-95 border border-zinc-700 shadow-2xl shadow-black"
                  >
-                   <Pause size={40} fill="white" />
-                   <span className="font-black text-xl uppercase tracking-tighter">Pause Machine</span>
+                   <Pause size={32} fill="white" />
+                   <span className="font-black text-lg uppercase tracking-tighter">Pause Machine</span>
                  </button>
                )}
 
@@ -159,23 +165,23 @@ export default function DesignF() {
                    setTimer(0)
                  }}
                  disabled={!isRunning}
-                 className="bg-white hover:bg-zinc-100 disabled:opacity-30 text-black rounded-3xl py-10 flex flex-col items-center gap-2 transition-all active:scale-95 shadow-2xl shadow-white/5 group"
+                 className="bg-white hover:bg-zinc-100 disabled:opacity-30 text-black rounded-3xl py-8 flex flex-col items-center gap-2 transition-all active:scale-95 shadow-2xl shadow-white/5"
                >
-                 <CheckCircle2 size={40} />
-                 <span className="font-black text-xl uppercase tracking-tighter">Complete Unit</span>
+                 <CheckCircle2 size={32} />
+                 <span className="font-black text-lg uppercase tracking-tighter">Complete Unit</span>
                </button>
             </div>
 
-            <div className="w-full mt-10 flex justify-between items-end bg-black/40 p-6 rounded-3xl border border-zinc-800">
+            <div className="w-full mt-6 flex justify-between items-end bg-black/40 p-5 rounded-3xl border border-zinc-800">
                <div>
                  <p className="text-zinc-500 text-xs font-black uppercase tracking-widest mb-1">Batch Progress</p>
-                 <p className="text-4xl font-black text-white">{completed} <span className="text-zinc-700">/ {totalInBatch}</span></p>
+                 <p className="text-3xl font-black text-white">{completed} <span className="text-zinc-700">/ {totalInBatch}</span></p>
                </div>
                <div className="flex gap-4">
-                  <div className="h-12 w-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                  <div className="h-10 w-1.5 bg-zinc-800 rounded-full overflow-hidden">
                     <div className="w-full bg-emerald-500 transition-all duration-700" style={{ height: '70%' }}></div>
                   </div>
-                  <div className="h-12 w-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                  <div className="h-10 w-1.5 bg-zinc-800 rounded-full overflow-hidden">
                     <div className="w-full bg-amber-500 transition-all duration-700" style={{ height: '40%' }}></div>
                   </div>
                </div>
@@ -184,7 +190,7 @@ export default function DesignF() {
         </div>
 
         {/* 🚩 RIGHT: QUALITY & LOGS (3/12) */}
-        <div className="lg:col-span-3 space-y-4 flex flex-col">
+        <div className="lg:col-span-3 space-y-4 flex flex-col h-full">
           <section className="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 shadow-inner">
             <h3 className="text-zinc-500 text-xs font-black uppercase tracking-widest mb-4 flex items-center gap-2">
               <Info size={14} className="text-amber-500" /> Instructions
@@ -194,14 +200,14 @@ export default function DesignF() {
             </p>
           </section>
 
-          <section className="bg-indigo-600 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group cursor-pointer active:scale-95 transition-all">
-             <div className="absolute top-[-10%] right-[-10%] opacity-10 group-hover:rotate-12 transition-transform">
+          <section className="bg-indigo-600 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group cursor-pointer active:scale-95 transition-all flex flex-col justify-center">
+             <div className="absolute top-[-10%] right-[-10%] opacity-10 group-hover:rotate-12 transition-transform pointer-events-none">
                <Camera size={120} />
              </div>
              <h3 className="font-black text-xs uppercase tracking-[0.2em] mb-1">QC Verification</h3>
              <p className="text-xl font-black mb-4 tracking-tighter">Submit Photo Proof</p>
-             <div className="bg-white/20 p-3 rounded-xl flex items-center justify-center gap-2 border border-white/30 text-xs font-black uppercase">
-               Open Camera <ArrowUpRight size={14} />
+             <div className="bg-white/20 p-3 rounded-xl flex items-center justify-center gap-2 border border-white/30 text-[10px] font-black uppercase">
+               Open Camera <ArrowUpRight size={12} />
              </div>
           </section>
 
@@ -226,7 +232,8 @@ export default function DesignF() {
       <footer className="px-6 py-2 flex justify-between items-center bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-black uppercase tracking-[0.4em] text-zinc-600">
         <div className="flex gap-10">
           <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> System Live</span>
-          <span className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-600"></div> CNC-R01 Master</span>
+          <span className="flex items-center gap-2 font-mono text-white tabular-nums">{time}</span>
+          <span className="flex items-center gap-2 uppercase tracking-widest">CNC-R01 Master</span>
         </div>
         <div className="flex gap-4 items-center">
           <span className="text-zinc-500">Station Hardware Rev. 4.2</span>
