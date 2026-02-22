@@ -29,6 +29,13 @@ const designs = [
     tags: ['Management', 'Enterprise'],
   },
   {
+    id: 'A',
+    name: 'Factory Dark',
+    desc: 'Classic industrial dark mode with tabbed navigation.',
+    best: 'High-glare environments, General Supervisors',
+    tags: ['Dark', 'Industrial', 'Supervisor'],
+  },
+  {
     id: 'C',
     name: 'Floor Walker',
     desc: 'Touch-first mobile card view for QA and roaming inspectors.',
@@ -64,10 +71,10 @@ export default function App() {
               className={`text-left transition-all group relative overflow-hidden rounded-3xl p-8 border 
                 ${d.id === 'F' 
                   ? 'bg-zinc-900 border-amber-600/50 hover:border-amber-600 shadow-2xl shadow-amber-600/5' 
-                  : 'bg-zinc-900/40 border-zinc-800 hover:border-zinc-600'}`}>
+                  : 'bg-zinc-900/40 border-slate-800 hover:border-slate-600'}`}>
               
-              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                <span className="text-7xl font-black italic text-white">{d.id}</span>
+              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity text-white font-black italic text-7xl">
+                {d.id}
               </div>
 
               {d.id === 'F' && (
