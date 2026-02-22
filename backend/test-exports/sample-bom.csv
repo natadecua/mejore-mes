@@ -1,0 +1,7 @@
+assembly_item,component_item,description,qty_per,step,uom
+WARDROBE-003,PANEL-SIDE,Side Panel 18mm MDF,2,Cutting,EA
+WARDROBE-003,PANEL-TOP,Top Panel 18mm MDF,1,Cutting,EA
+WARDROBE-003,PANEL-BOTTOM,Bottom Panel 18mm MDF,1,Cutting,EA
+WARDROBE-003,SHELF-FIXED,Fixed Shelf 18mm MDF,3,Cutting,EA
+WARDROBE-003,DOOR-HINGE,Soft Close Hinge,4,Assembly,EA
+WARDROBE-003,HANDLE-BAR,Aluminum D-Handle,2,Assembly,EA

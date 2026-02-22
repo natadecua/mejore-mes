@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BOM>
+  <Item name="CHAIR-001" description="Solid Wood Dining Chair" qty="1">
+    <Component name="SEAT-PANEL"   qty="1" material="Plywood 18mm" />
+    <Component name="BACK-RAIL"    qty="2" material="Beech Wood 45x45" />
+    <Component name="LEG-FRONT"    qty="2" material="Beech Wood 45x45" />
+    <Component name="LEG-REAR"     qty="2" material="Beech Wood 45x45" />
+    <Component name="CUSHION-SEAT" qty="1" material="Foam + Fabric" />
+  </Item>
+  <Item name="TABLE-002" description="Dining Table 6-Seater" qty="1">
+    <Component name="TABLETOP"     qty="1" material="Solid Oak 40mm" />
+    <Component name="APRON-LONG"   qty="2" material="Oak 30x70" />
+    <Component name="APRON-SHORT"  qty="2" material="Oak 30x70" />
+    <Component name="LEG-TABLE"    qty="4" material="Oak 70x70" />
+    <Component name="HARDWARE-SET" qty="1" material="Metal Fasteners" />
+  </Item>
+</BOM>
