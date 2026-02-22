@@ -1,4 +1,3 @@
-// backend/src/index.js
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -22,6 +21,8 @@ app.use('/api/bom',       require('./routes/bom'));
 app.use('/api/orders',    require('./routes/orders'));
 app.use('/api/qbo',       require('./routes/qbo'));
 app.use('/api/qc-photos', require('./routes/qcPhotos'));
+app.use('/api/projects',  require('./routes/projects'));
+app.use('/api/logs',      require('./routes/logs'));
 app.use('/auth',          require('./routes/auth'));
 
 // ── Health + discovery ────────────────────────────────────────────────────────
@@ -31,7 +32,7 @@ app.get('/', (req, res) => {
 
   res.json({
     service: 'Mejore MES Backend',
-    version: '0.2.0',
+    version: '0.5.0',
     status: 'running',
     integrations: {
       orderTime:     otConfigured  ? '✅ configured' : '⚠️  mock mode (set OT_API_KEY + OT_EMAIL)',
@@ -41,18 +42,10 @@ app.get('/', (req, res) => {
     endpoints: [
       'GET  /api/bom/imports',
       'POST /api/bom/import                (multipart: file)',
-      'GET  /api/bom/imports/:id/items',
-      'GET  /api/orders',
-      'GET  /api/orders/:docNo',
-      'POST /api/orders',
-      'PUT  /api/orders/:docNo/status',
-      'GET  /api/qbo/invoice/:id',
-      'GET  /api/qbo/invoices',
-      'GET  /api/qbo/cached',
-      'POST /api/qc-photos               (multipart: file)',
-      'GET  /api/qc-photos',
-      'GET  /auth/qbo                    (QBO OAuth2 init)',
-      'GET  /auth/qbo/callback           (QBO OAuth2 callback)',
+      'GET  /api/projects                  (List Contracts)',
+      'GET  /api/projects/:id/tree         (Deep Hierarchy)',
+      'POST /api/logs/start                (Track time)',
+      'POST /api/logs/stop                 (Log piece count)',
     ],
   });
 });
