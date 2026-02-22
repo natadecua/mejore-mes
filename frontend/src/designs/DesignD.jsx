@@ -146,7 +146,7 @@ export default function DesignD() {
               <h3 className="font-bold uppercase tracking-wider text-sm">Task Instructions</h3>
             </div>
             <div className="bg-black/30 rounded-2xl p-4 text-slate-300 text-sm leading-relaxed border border-slate-800 italic font-medium">
-              \"{currentJob.instructions}\"
+              "{currentJob.instructions}"
             </div>
             <button className="w-full mt-4 bg-slate-800 hover:bg-slate-750 text-white text-xs font-bold py-3 rounded-xl flex items-center justify-center gap-2 border border-slate-700">
               <Maximize2 size={14} /> VIEW FULL PLAN
@@ -185,10 +185,10 @@ export default function DesignD() {
       <div className="bg-black border border-slate-800 rounded-2xl px-6 py-3 flex items-center justify-between text-[10px] uppercase font-bold tracking-widest text-slate-500">
         <div className="flex gap-6">
           <span className="flex items-center gap-2">
-            <div className=\"w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]\"></div> SYSTEM ONLINE
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></div> SYSTEM ONLINE
           </span>
           <span className="flex items-center gap-2">
-            <div className=\"w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]\"></div> PYTHA SYNCED
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div> PYTHA SYNCED
           </span>
         </div>
         <div className="flex items-center gap-4">
